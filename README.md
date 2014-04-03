@@ -32,21 +32,38 @@ var chunkit = require('chunked-stream'),
     fs = require('fs');
 
 var fStream = fs.CreateReadStream(__dirname + '/video.mp4');
-var chunkStream = new chunkit(fStream, {bytes: 1024}, function (e, chunk) {
-	if (e) return stderr.write(e);
+var chunkStream = new chunkit(fStream, {bytes: 1024*1024}, function (err, chunk) {
+	if (err) return console.error('Error: ', err);
 	
-	/*
-	 * Do whatever you want with your 1MB chunk.
-	 * Chunk Object
-	 	 - .index(Integer) chunk number
-	 	 - .data(Buffer) underlying chunked buffer
-	 	 - .last(Boolean) true if the chunk is the last chunk from the stream.
-	 */
-	 
-	stdout.write('Bytes: ' + chunk.data.length);
+	// Do whatever you want with your 1MB chunk.
+	console.log('Bytes: ', chunk.data.length);
 	
 });
+```
 
+### Example 2: Without callback (Evented)
+
+```js
+var chunkit = require('chunked-stream'),
+    fs = require('fs');
+
+var fStream = fs.CreateReadStream(__dirname + '/video.mp4');
+var chunkStream = new chunkit(fStream, {bytes: 1024*1024});
+
+chunkStream.on('error', function (err) {
+	console.log('Error: ', err);
+});
+
+chunkStream.on('chunk', function (chunk) {
+	console.log('Bytes: ', chunk.data.length);
+});
+
+chunkStream.on('end', function (stats) {
+	console.log('Stats: ', stats);
+});
+
+// Important when no callback provided.
+chunkStream.begin();
 ```
 
 ## Options

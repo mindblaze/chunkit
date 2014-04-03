@@ -96,7 +96,7 @@ ChunkIt.prototype.begin = function() {
   
   this.streamEndHandler = function () {
     self.reading = false;
-    self.flushChunk(true, function (e) {
+    self.flushChunk(function (e) {
       if (e) return self.emit('error', e);
       self.finished = true;
       self.cb && self.cb(null, self.stats);
@@ -111,43 +111,39 @@ ChunkIt.prototype.begin = function() {
   self.stream.resume();
 }
 
-ChunkIt.prototype.flushChunk = function(last, cb) {
+ChunkIt.prototype.flushChunk = function(cb) {
   if (!this.initiated) return;
-  if (typeof last == 'function') {
-    cb = last;
-    last = false;
-  }
   
   var self = this;
   
   var newChunks = [],
-      newChunk = null;
+      newChunk = {};
   while (this.buffer.length >= this.options.bytes) {
     if (this.buffer.length > this.options.bytes) {
-      newChunk = this.buffer.slice(0, this.options.bytes);
+      newChunk.data = this.buffer.slice(0, this.options.bytes);
       this.buffer = new Buffer(this.buffer.slice(this.options.bytes));
       newChunk.last = false;
     } else {
-      newChunk = this.buffer.slice(0, this.options.bytes);
+      newChunk.data = this.buffer.slice(0, this.options.bytes);
       this.buffer = this.buffer.slice(this.options.bytes);
-      newChunk.last = last;
+      newChunk.last = !this.reading;
     }
     newChunk.index = ++this.stats.chunks;
     newChunks.push(newChunk);
   }
   
   // Last chunk
-  if (last && this.buffer.length) {
-    newChunk = this.buffer.slice(0, this.options.bytes);
+  if (!this.reading && this.buffer.length) {
+    newChunk.data = this.buffer.slice(0, this.options.bytes);
     this.buffer = this.buffer.slice(this.options.bytes);
     newChunk.index = ++this.stats.chunks;
     newChunk.last = true;
     newChunks.push(newChunk);
   }
     
-  async.eachSeries(newChunks, function (newChunk, next) {
-    self.cb && self.cb(null, newChunk);
-    self.emit('chunk', newChunk);
+  async.eachSeries(newChunks, function (chunk, next) {
+    self.cb && self.cb(null, chunk);
+    self.emit('chunk', chunk);
     next();
   }, function (e) {
     if (e) return self.emit('error', e);
