@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Chunked-stream by talha-asad</title>
+    <title>Chunked-stream by mindblaze</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -18,23 +18,119 @@
         <h1>Chunked-stream</h1>
         <p>A simple and lightweight stream data chunking module for NodeJS</p>
 
-        <p class="view"><a href="https://github.com/talha-asad/chunked-stream">View the Project on GitHub <small>talha-asad/chunked-stream</small></a></p>
+        <p class="view"><a href="https://github.com/mindblaze/chunkit">View the Project on GitHub <small>mindblaze/chunkit</small></a></p>
 
 
         <ul>
-          <li><a href="https://github.com/talha-asad/chunked-stream/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/talha-asad/chunked-stream/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/talha-asad/chunked-stream">View On <strong>GitHub</strong></a></li>
+          <li><a href="https://github.com/mindblaze/chunkit/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/mindblaze/chunkit/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/mindblaze/chunkit">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
         <h1>
-<a name="chunked-stream" class="anchor" href="#chunked-stream"><span class="octicon octicon-link"></span></a>chunked-stream</h1>
+<a name="chunk-it" class="anchor" href="#chunk-it"><span class="octicon octicon-link"></span></a>Chunk It</h1>
 
-<p>A simple and lightweight stream data chunking module for NodeJS</p>
+<p><a href="https://travis-ci.org/mindblaze/chunked-stream"><img src="https://travis-ci.org/mindblaze/chunked-stream.png?branch=master" alt="Build Status"></a>
+<a href="https://www.versioneye.com/user/projects/5323a411ec13758e7d000109"><img src="https://www.versioneye.com/user/projects/5323a411ec13758e7d000109/badge.png" alt="Dependency Status"></a>
+<a href="http://badge.fury.io/js/chunked-stream"><img src="https://badge.fury.io/js/chunked-stream.png" alt="NPM version"></a></p>
+
+<p><a href="https://www.npmjs.org/package/chunked-stream"><img src="https://nodei.co/npm/chunked-stream.png?downloads=true" alt="NPM stats"></a></p>
+
+<p>A simple and light-weight interface to chunk stream data.</p>
+
+<h2>
+<a name="benefits--features" class="anchor" href="#benefits--features"><span class="octicon octicon-link"></span></a>Benefits &amp; Features</h2>
+
+<ul>
+<li>Super fast and super easy to use</li>
+<li>Low memory usage</li>
+<li>Nothing hits the disk</li>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<pre><code>$ npm install chunkit
+</code></pre>
+
+<h2>
+<a name="example-usage" class="anchor" href="#example-usage"><span class="octicon octicon-link"></span></a>Example Usage</h2>
+
+<h3>
+<a name="example-1-callback-for-1mb-chunks-from-a-readable-stream" class="anchor" href="#example-1-callback-for-1mb-chunks-from-a-readable-stream"><span class="octicon octicon-link"></span></a>Example 1: Callback for 1MB chunks from a readable stream.</h3>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">chunkit</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chunked-stream'</span><span class="p">),</span>
+    <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fs'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">fStream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">CreateReadStream</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/video.mp4'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">chunkStream</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">chunkit</span><span class="p">(</span><span class="nx">fStream</span><span class="p">,</span> <span class="p">{</span><span class="nx">bytes</span><span class="o">:</span> <span class="mi">1024</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="k">return</span> <span class="nx">stderr</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+
+    <span class="cm">/*</span>
+<span class="cm">     * Do whatever you want with your 1MB chunk.</span>
+<span class="cm">     * Chunk Object</span>
+<span class="cm">         - .index(Integer) chunk number</span>
+<span class="cm">         - .data(Buffer) underlying chunked buffer</span>
+<span class="cm">         - .last(Boolean) true if the chunk is the last chunk from the stream.</span>
+<span class="cm">     */</span>
+
+    <span class="nx">stdout</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'Bytes: '</span> <span class="o">+</span> <span class="nx">chunk</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+
+<span class="p">});</span>
+
+</pre></div>
+
+<h2>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<ul>
+<li>
+<strong>bytes (Integer)</strong> - Parts that are uploaded simultaneously.</li>
+<li>
+<strong>start (Integer)</strong> (Default: 0) - start chunking stream from byte number.</li>
+<li>
+<strong>end (Integer)</strong> (Default: end of file) - chunk till byte number.</li>
+</ul><h2>
+<a name="chunk-object" class="anchor" href="#chunk-object"><span class="octicon octicon-link"></span></a>Chunk Object</h2>
+
+<ul>
+<li>
+<strong>index (Integer)</strong> - chunk index, starting from 1</li>
+<li>
+<strong>data (Buffer)</strong> - Underlying chunked buffer.</li>
+<li>
+<strong>last (Boolean)</strong> - True if its the last chunk.</li>
+</ul><h2>
+<a name="history" class="anchor" href="#history"><span class="octicon octicon-link"></span></a>History</h2>
+
+<ul>
+<li>v0.0.1 (2014-04-03) -- Initial release.</li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>The MIT License (MIT)</p>
+
+<p>Copyright (c) 2014 Talha Asad</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/talha-asad">talha-asad</a></p>
+        <p>This project is maintained by <a href="https://github.com/mindblaze">mindblaze</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
