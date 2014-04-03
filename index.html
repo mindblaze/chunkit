@@ -31,11 +31,11 @@
         <h1>
 <a name="chunk-it" class="anchor" href="#chunk-it"><span class="octicon octicon-link"></span></a>Chunk It</h1>
 
-<p><a href="https://travis-ci.org/mindblaze/chunked-stream"><img src="https://travis-ci.org/mindblaze/chunked-stream.png?branch=master" alt="Build Status"></a>
-<a href="https://www.versioneye.com/user/projects/5323a411ec13758e7d000109"><img src="https://www.versioneye.com/user/projects/5323a411ec13758e7d000109/badge.png" alt="Dependency Status"></a>
-<a href="http://badge.fury.io/js/chunked-stream"><img src="https://badge.fury.io/js/chunked-stream.png" alt="NPM version"></a></p>
+<p><a href="https://travis-ci.org/mindblaze/chunkit"><img src="https://travis-ci.org/mindblaze/chunkit.png?branch=master" alt="Build Status"></a>
+<a href="https://www.versioneye.com/user/projects/533d32527bae4be0c7000242"><img src="https://www.versioneye.com/user/projects/533d32527bae4be0c7000242/badge.png" alt="Dependency Status"></a>
+<a href="http://badge.fury.io/js/chunkit"><img src="https://badge.fury.io/js/chunkit.png" alt="NPM version"></a></p>
 
-<p><a href="https://www.npmjs.org/package/chunked-stream"><img src="https://nodei.co/npm/chunked-stream.png?downloads=true" alt="NPM stats"></a></p>
+<p><a href="https://www.npmjs.org/package/chunkit"><img src="https://nodei.co/npm/chunkit.png?downloads=true" alt="NPM stats"></a></p>
 
 <p>A simple and light-weight interface to chunk stream data.</p>
 
@@ -62,21 +62,38 @@
     <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fs'</span><span class="p">);</span>
 
 <span class="kd">var</span> <span class="nx">fStream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">CreateReadStream</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/video.mp4'</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">chunkStream</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">chunkit</span><span class="p">(</span><span class="nx">fStream</span><span class="p">,</span> <span class="p">{</span><span class="nx">bytes</span><span class="o">:</span> <span class="mi">1024</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="k">return</span> <span class="nx">stderr</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">chunkStream</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">chunkit</span><span class="p">(</span><span class="nx">fStream</span><span class="p">,</span> <span class="p">{</span><span class="nx">bytes</span><span class="o">:</span> <span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'Error: '</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
 
-    <span class="cm">/*</span>
-<span class="cm">     * Do whatever you want with your 1MB chunk.</span>
-<span class="cm">     * Chunk Object</span>
-<span class="cm">         - .index(Integer) chunk number</span>
-<span class="cm">         - .data(Buffer) underlying chunked buffer</span>
-<span class="cm">         - .last(Boolean) true if the chunk is the last chunk from the stream.</span>
-<span class="cm">     */</span>
-
-    <span class="nx">stdout</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'Bytes: '</span> <span class="o">+</span> <span class="nx">chunk</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="c1">// Do whatever you want with your 1MB chunk.</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Bytes: '</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
 
 <span class="p">});</span>
+</pre></div>
 
+<h3>
+<a name="example-2-without-callback-evented" class="anchor" href="#example-2-without-callback-evented"><span class="octicon octicon-link"></span></a>Example 2: Without callback (Evented)</h3>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">chunkit</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chunked-stream'</span><span class="p">),</span>
+    <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fs'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">fStream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">CreateReadStream</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/video.mp4'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">chunkStream</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">chunkit</span><span class="p">(</span><span class="nx">fStream</span><span class="p">,</span> <span class="p">{</span><span class="nx">bytes</span><span class="o">:</span> <span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">});</span>
+
+<span class="nx">chunkStream</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error: '</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">chunkStream</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'chunk'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">chunk</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Bytes: '</span><span class="p">,</span> <span class="nx">chunk</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">chunkStream</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'end'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">stats</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Stats: '</span><span class="p">,</span> <span class="nx">stats</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// Important when no callback provided.</span>
+<span class="nx">chunkStream</span><span class="p">.</span><span class="nx">begin</span><span class="p">();</span>
 </pre></div>
 
 <h2>
