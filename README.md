@@ -1,10 +1,10 @@
 # Chunk It
 
-[![Build Status](https://travis-ci.org/mindblaze/chunked-stream.png?branch=master)](https://travis-ci.org/mindblaze/chunked-stream)
-[![Dependency Status](https://www.versioneye.com/user/projects/5323a411ec13758e7d000109/badge.png)](https://www.versioneye.com/user/projects/5323a411ec13758e7d000109)
-[![NPM version](https://badge.fury.io/js/chunked-stream.png)](http://badge.fury.io/js/chunked-stream)
+[![Build Status](https://travis-ci.org/mindblaze/chunkit.png?branch=master)](https://travis-ci.org/mindblaze/chunkit)
+[![Dependency Status](https://www.versioneye.com/user/projects/533d32527bae4be0c7000242/badge.png)](https://www.versioneye.com/user/projects/533d32527bae4be0c7000242)
+[![NPM version](https://badge.fury.io/js/chunkit.png)](http://badge.fury.io/js/chunkit)
 
-[![NPM stats](https://nodei.co/npm/chunked-stream.png?downloads=true)](https://www.npmjs.org/package/chunked-stream)
+[![NPM stats](https://nodei.co/npm/chunkit.png?downloads=true)](https://www.npmjs.org/package/chunkit)
 
 A simple and light-weight interface to chunk stream data.
 
