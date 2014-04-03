@@ -1,0 +1,31 @@
+{
+  "author": {
+    "name": "Talha Asad",
+    "email": "talha@mindblaze.net",
+    "url": "http://mindblaze.net"
+  },
+  "name": "chunked-stream",
+  "description": "A simple and lightweight interface for chunking stream data in NodeJS",
+  "version": "0.0.1",
+  "keywords": [
+    "chunk stream",
+    "chunk streaming",
+    "chunked stream",
+    "chunked streaming",
+    "byte chunk stream",
+    "byte chunk streaming",
+    "chunk stream reading"
+  ],
+  "homepage": "http://mindblaze.github.io/chunked-stream",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mindblaze/chunked-stream.git"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "async": "0.2.10"
+  }
+}
