@@ -1,6 +1,6 @@
 # History
 
-## V 0.0.3 (April 3, 2014)
+## V 0.0.4 (April 3, 2014)
 * Fixed a critical issue.
 * Tested with filesizes ranging from 256 bytes to 2GB.
 
