@@ -2,9 +2,9 @@
   "author": {
     "name": "Talha Asad",
     "email": "talha@mindblaze.net",
-    "url": "http://mindblaze.net"
+    "url": "http://www.mindblaze.net"
   },
-  "name": "chunked-stream",
+  "name": "ChunkIt",
   "description": "A simple and lightweight interface for chunking stream data in NodeJS",
   "version": "0.0.1",
   "keywords": [
@@ -14,12 +14,14 @@
     "chunked streaming",
     "byte chunk stream",
     "byte chunk streaming",
-    "chunk stream reading"
+    "chunk stream reading",
+    "chunkit",
+    "chunk it"
   ],
-  "homepage": "http://mindblaze.github.io/chunked-stream",
+  "homepage": "http://mindblaze.github.io/chunkit",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mindblaze/chunked-stream.git"
+    "url": "git://github.com/mindblaze/chunkit.git"
   },
   "main": "index.js",
   "engines": {
