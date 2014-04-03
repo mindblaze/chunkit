@@ -88,6 +88,7 @@ chunkStream.begin();
 
 ## History
 
+* v0.0.3 (2014-04-03) -- Fixed a critical issue.
 * v0.0.2 (2014-04-03) -- Added new examples and features.
 * v0.0.1 (2014-04-03) -- Initial release.
 

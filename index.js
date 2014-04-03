@@ -41,8 +41,7 @@ function ChunkIt(stream, options, cb) {
      end: -1              // stop chunking after this byte
   }
   
-  options = extendObj(defaultOptions, options);
-  this.options = options;
+  this.options = extendObj(defaultOptions, options);
   
   this.stream = stream;
   
@@ -85,13 +84,11 @@ ChunkIt.prototype.begin = function() {
     if (typeof chunk === 'string') chunk = new Buffer(chunk, 'utf-8');
     self.stats.bytes += chunk.length;
     self.buffer = Buffer.concat([self.buffer, chunk]);
-    if (self.buffer.length >= self.options.bytes) {
-      self.stream.pause();
-      self.flushChunk(function (e) {
-        if (e) return self.emit('error', e);
-        self.stream.resume();
-      });
-    }
+    self.stream.pause();
+    self.flushChunk(function (e) {
+      if (e) return self.emit('error', e);
+      self.stream.resume();
+    });
   }
   
   this.streamEndHandler = function () {
@@ -120,9 +117,9 @@ ChunkIt.prototype.flushChunk = function(last, cb) {
   
   var self = this;
   
-  var newChunks = [],
-      newChunk = {};
+  var newChunks = [];
   while (this.buffer.length >= this.options.bytes) {
+    var newChunk = {};
     if (this.buffer.length > this.options.bytes) {
       newChunk.data = this.buffer.slice(0, this.options.bytes);
       this.buffer = new Buffer(this.buffer.slice(this.options.bytes));
@@ -132,20 +129,26 @@ ChunkIt.prototype.flushChunk = function(last, cb) {
       this.buffer = this.buffer.slice(this.options.bytes);
       newChunk.last = last;
     }
-    newChunk.index = ++this.stats.chunks;
+    console.log('Index: ', this.stats.chunks);
+    newChunk.index = this.stats.chunks + 1;
+    this.stats.chunks++;
     newChunks.push(newChunk);
   }
   
   // Last chunk
   if (!this.reading && last && this.buffer.length) {
+    var newChunk = {};
     newChunk.data = this.buffer.slice(0, this.options.bytes);
     this.buffer = this.buffer.slice(this.options.bytes);
-    newChunk.index = ++this.stats.chunks;
+    newChunk.index = this.stats.chunks + 1;
+    this.stats.chunks + 1
     newChunk.last = true;
     newChunks.push(newChunk);
   }
-    
+  
   async.eachSeries(newChunks, function (chunk, next) {
+    console.log('chunk', chunk.data);
+    if (!chunk) return next();
     self.cb && self.cb(null, chunk);
     self.emit('chunk', chunk);
     next();
