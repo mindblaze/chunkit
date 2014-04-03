@@ -129,9 +129,7 @@ ChunkIt.prototype.flushChunk = function(last, cb) {
       this.buffer = this.buffer.slice(this.options.bytes);
       newChunk.last = last;
     }
-    console.log('Index: ', this.stats.chunks);
-    newChunk.index = this.stats.chunks + 1;
-    this.stats.chunks++;
+    newChunk.index = this.stats.chunks++;
     newChunks.push(newChunk);
   }
   
@@ -140,14 +138,12 @@ ChunkIt.prototype.flushChunk = function(last, cb) {
     var newChunk = {};
     newChunk.data = this.buffer.slice(0, this.options.bytes);
     this.buffer = this.buffer.slice(this.options.bytes);
-    newChunk.index = this.stats.chunks + 1;
-    this.stats.chunks + 1
+    newChunk.index = this.stats.chunks++;
     newChunk.last = true;
     newChunks.push(newChunk);
   }
   
   async.eachSeries(newChunks, function (chunk, next) {
-    console.log('chunk', chunk.data);
     if (!chunk) return next();
     self.cb && self.cb(null, chunk);
     self.emit('chunk', chunk);
