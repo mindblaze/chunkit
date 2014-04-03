@@ -46,6 +46,7 @@
 <li>Super fast and super easy to use</li>
 <li>Low memory usage</li>
 <li>Nothing hits the disk</li>
+<li>Tested with filesizes ranging from 256 bytes to 2GB.</li>
 </ul><h2>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
@@ -56,9 +57,9 @@
 <a name="example-usage" class="anchor" href="#example-usage"><span class="octicon octicon-link"></span></a>Example Usage</h2>
 
 <h3>
-<a name="example-1-callback-for-1mb-chunks-from-a-readable-stream" class="anchor" href="#example-1-callback-for-1mb-chunks-from-a-readable-stream"><span class="octicon octicon-link"></span></a>Example 1: Callback for 1MB chunks from a readable stream.</h3>
+<a name="example-1-using-callback-for-1mb-chunks" class="anchor" href="#example-1-using-callback-for-1mb-chunks"><span class="octicon octicon-link"></span></a>Example 1: Using callback for 1MB chunks</h3>
 
-<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">chunkit</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chunked-stream'</span><span class="p">),</span>
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">chunkit</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chunkit'</span><span class="p">),</span>
     <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fs'</span><span class="p">);</span>
 
 <span class="kd">var</span> <span class="nx">fStream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">CreateReadStream</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/video.mp4'</span><span class="p">);</span>
@@ -74,7 +75,7 @@
 <h3>
 <a name="example-2-without-callback-evented" class="anchor" href="#example-2-without-callback-evented"><span class="octicon octicon-link"></span></a>Example 2: Without callback (Evented)</h3>
 
-<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">chunkit</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chunked-stream'</span><span class="p">),</span>
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">chunkit</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'chunkit'</span><span class="p">),</span>
     <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'fs'</span><span class="p">);</span>
 
 <span class="kd">var</span> <span class="nx">fStream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">CreateReadStream</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">'/video.mp4'</span><span class="p">);</span>
@@ -117,9 +118,18 @@
 <li>
 <strong>last (Boolean)</strong> - True if its the last chunk.</li>
 </ul><h2>
+<a name="stats-object" class="anchor" href="#stats-object"><span class="octicon octicon-link"></span></a>Stats Object</h2>
+
+<ul>
+<li>
+<strong>bytes (Integer)</strong> - Total bytes chunked.</li>
+<li>
+<strong>chunks (Integer)</strong> - Total number of chunks.</li>
+</ul><h2>
 <a name="history" class="anchor" href="#history"><span class="octicon octicon-link"></span></a>History</h2>
 
 <ul>
+<li>v0.0.2 (2014-04-03) -- Added new examples and features.</li>
 <li>v0.0.1 (2014-04-03) -- Initial release.</li>
 </ul><h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
