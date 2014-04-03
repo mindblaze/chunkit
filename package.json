@@ -6,7 +6,7 @@
   },
   "name": "chunkit",
   "description": "A simple and lightweight interface for chunking stream data in NodeJS",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [
     "chunk stream",
     "chunk streaming",

@@ -13,6 +13,7 @@ A simple and light-weight interface to chunk stream data.
 * Super fast and super easy to use
 * Low memory usage
 * Nothing hits the disk
+* Tested with filesizes ranging from 256 bytes to 2GB.
 
 
 ## Installation
@@ -79,9 +80,15 @@ chunkStream.begin();
 * **data (Buffer)** - Underlying chunked buffer.
 * **last (Boolean)** - True if its the last chunk.
 
+## Stats Object
+
+* **bytes (Integer)** - Total bytes chunked.
+* **chunks (Integer)** - Total number of chunks.
+
 
 ## History
 
+* v0.0.2 (2014-04-03) -- Added new examples and features.
 * v0.0.1 (2014-04-03) -- Initial release.
 
 

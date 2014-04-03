@@ -20,6 +20,7 @@ function ChunkIt(stream, options, cb) {
   this.on('error', function (e) {
     if (self.failed || self.finished) return;
     self.reading = false;
+    self.finished = false;
     self.failed = true;
     
     // Remove our event handlers if any.
@@ -52,11 +53,10 @@ function ChunkIt(stream, options, cb) {
   this.finished = false;
   
   // Stats
-  this.stats = {totalBytes: 0, chunks: 0};
+  this.stats = {bytes: 0, chunks: 0};
    
   // Chunking and buffering
   this.buffer = new Buffer(0);
-  this.chunks = [];
   
   this.cb = cb;
    
@@ -83,7 +83,7 @@ ChunkIt.prototype.begin = function() {
   this.streamDataHandler = function (chunk) {
     self.reading = true;
     if (typeof chunk === 'string') chunk = new Buffer(chunk, 'utf-8');
-    self.stats.totalBytes += chunk.length;
+    self.stats.bytes += chunk.length;
     self.buffer = Buffer.concat([self.buffer, chunk]);
     if (self.buffer.length >= self.options.bytes) {
       self.stream.pause();
@@ -96,7 +96,7 @@ ChunkIt.prototype.begin = function() {
   
   this.streamEndHandler = function () {
     self.reading = false;
-    self.flushChunk(function (e) {
+    self.flushChunk(true, function (e) {
       if (e) return self.emit('error', e);
       self.finished = true;
       self.cb && self.cb(null, self.stats);
@@ -104,15 +104,19 @@ ChunkIt.prototype.begin = function() {
     });
   }
   
-  self.initiated = true;
-  self.stream.on('error', self.streamErrorHandler);
-  self.stream.on('data', self.streamDataHandler);
-  self.stream.on('end', self.streamEndHandler);
-  self.stream.resume();
+  this.initiated = true;
+  this.stream.on('error', this.streamErrorHandler);
+  this.stream.on('data', this.streamDataHandler);
+  this.stream.on('end', this.streamEndHandler);
+  this.stream.resume();
 }
 
-ChunkIt.prototype.flushChunk = function(cb) {
-  if (!this.initiated) return;
+ChunkIt.prototype.flushChunk = function(last, cb) {
+  if (!this.initiated || this.finished) return cb();
+  if (typeof last == 'function') {
+    cb = last;
+    last = false;
+  }
   
   var self = this;
   
@@ -126,14 +130,14 @@ ChunkIt.prototype.flushChunk = function(cb) {
     } else {
       newChunk.data = this.buffer.slice(0, this.options.bytes);
       this.buffer = this.buffer.slice(this.options.bytes);
-      newChunk.last = !this.reading;
+      newChunk.last = last;
     }
     newChunk.index = ++this.stats.chunks;
     newChunks.push(newChunk);
   }
   
   // Last chunk
-  if (!this.reading && this.buffer.length) {
+  if (!this.reading && last && this.buffer.length) {
     newChunk.data = this.buffer.slice(0, this.options.bytes);
     this.buffer = this.buffer.slice(this.options.bytes);
     newChunk.index = ++this.stats.chunks;
@@ -146,7 +150,7 @@ ChunkIt.prototype.flushChunk = function(cb) {
     self.emit('chunk', chunk);
     next();
   }, function (e) {
-    if (e) return self.emit('error', e);
+    if (e) return cb(e);
     cb();
   });
 }
