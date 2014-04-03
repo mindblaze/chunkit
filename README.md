@@ -25,10 +25,10 @@ $ npm install chunkit
 ## Example Usage
 
 
-### Example 1: Callback for 1MB chunks from a readable stream.
+### Example 1: Using callback for 1MB chunks
 
 ```js
-var chunkit = require('chunked-stream'),
+var chunkit = require('chunkit'),
     fs = require('fs');
 
 var fStream = fs.CreateReadStream(__dirname + '/video.mp4');
@@ -44,7 +44,7 @@ var chunkStream = new chunkit(fStream, {bytes: 1024*1024}, function (err, chunk)
 ### Example 2: Without callback (Evented)
 
 ```js
-var chunkit = require('chunked-stream'),
+var chunkit = require('chunkit'),
     fs = require('fs');
 
 var fStream = fs.CreateReadStream(__dirname + '/video.mp4');
