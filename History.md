@@ -1,5 +1,8 @@
 # History
 
+## V 0.0.5 (June 9, 2014)
+* Dependencies updated.
+
 ## V 0.0.4 (April 3, 2014)
 * Fixed a critical issue.
 * Tested with filesizes ranging from 256 bytes to 2GB.
